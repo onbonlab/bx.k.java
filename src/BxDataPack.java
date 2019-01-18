@@ -28,11 +28,11 @@ public class BxDataPack {
     //
     // crc 模式
     // 默认无校验
-    public byte crcMode = 0x02;
+    public byte crcMode = 0x00;
 
     //
     // 显示模式
-    public byte dispMode;
+    public byte dispMode = 0x00;
 
     //
     // 设备类型
@@ -179,12 +179,22 @@ public class BxDataPack {
         bytes.add(data);
 
         //
-        // crc
-        bytes.add(crc, BxByteArray.Endian.LITTLE);
+        // add crc
+        crc = 0x0;
+        bytes.add(crc);
+
+        //
+        byte[] origin = bytes.build();
+        int originLen = origin.length;
+        crc = BxUtils.CRC16(origin, 0, originLen-2);
+
+        origin[originLen-2] = (byte)(crc & 0xff);
+        origin[originLen-1] = (byte)(crc>>8);
+
 
         //
         // 进行转义
-        byte[] result = wrap(bytes.build());
+        byte[] result = wrap(origin);
 
         //
         return result;
