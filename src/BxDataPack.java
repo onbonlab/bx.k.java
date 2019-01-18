@@ -59,6 +59,11 @@ public class BxDataPack {
         this.dataLen = (short) data.length;
     }
 
+    public BxDataPack(BxCmd cmd) {
+        this.data = cmd.build();
+        this.dataLen = (short) data.length;
+    }
+
 
     /**
      * 对数据进行转义
@@ -199,5 +204,100 @@ public class BxDataPack {
         //
         return result;
 
+    }
+
+    /**
+     * 将BYTE数组解析成 BxDataPack
+     * @param src
+     * @return
+     */
+    public static BxDataPack parse(byte[] src) {
+
+        //
+        // 反转义
+        byte[] dst = unwrap(src, src.length);
+        if(dst == null) {
+            return null;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * 去除数据转义
+     * @param src
+     * @param length
+     * @return
+     */
+    private static byte[] unwrap(byte[] src, int length) {
+
+        int len = 0;
+
+        if(length == 0)
+            len = 0;
+
+        if(src[0] != (byte)0xa5)
+            len = 0;
+
+        if(src[length-1] != (byte)0x5a)
+            len = 0;
+
+        len = length;
+
+        for(byte d : src) {
+            if((d == (byte)0xa5) || (d == (byte)0x5a) || (d == (byte)0xa6) || (d == (byte)0x5b)) {
+                len--;
+            }
+        }
+
+        byte[] dst;
+
+        //
+        // 如果计算的帧长度为0，说明数据不正确
+        if(len == 0)
+            return null;
+
+        dst = new byte[len];
+
+        int offset = 0;
+        for(int i=0; i<length; ) {
+
+            if((src[i] == (byte)0xa5) || (src[i] == 0x5a)) {
+                i++;
+            }
+            else if(src[i] == (byte)0xa6) {
+                if(src[i+1] == 0x01) {
+                    dst[offset++] = (byte)0xa6;
+                    i = i+2;
+                }
+                else if(src[i+1] == 0x02) {
+                    dst[offset++] = (byte)0xa5;
+                    i = i+2;
+                }
+                else
+                    return null;
+            }
+
+            else if(src[i] == 0x5b) {
+                if(src[i+1] == 0x01) {
+                    dst[offset++] = (byte)0x5b;
+                    i = i+2;
+                }
+                else if(src[i+1] == 0x02) {
+                    dst[offset++] = (byte)0x5a;
+                    i = i+2;
+                }
+                else
+                    return null;
+            }
+
+            else {
+                dst[offset++] = src[i++];
+            }
+        }
+
+
+        return dst;
     }
 }

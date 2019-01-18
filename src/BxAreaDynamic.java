@@ -48,6 +48,7 @@ public class BxAreaDynamic extends BxArea {
 
     //
     // type setting
+    // 属于 extend para
     private byte typeSetting = 0x00;
 
     //
@@ -109,9 +110,9 @@ public class BxAreaDynamic extends BxArea {
         array.add(TYPE);
 
         // x, y, w, h
-        array.add(getX());
+        array.add((short)(getX()/8));
         array.add(getY());
-        array.add(getW());
+        array.add((short)(getW()/8));
         array.add(getH());
 
         //
@@ -140,7 +141,7 @@ public class BxAreaDynamic extends BxArea {
 
         //
         // type setting
-        array.add(typeSetting);
+        //array.add(typeSetting);
 
         //
         // alignment
@@ -169,5 +170,125 @@ public class BxAreaDynamic extends BxArea {
         array.add(data);
 
         return array.build();
+    }
+
+    public byte getId() {
+        return id;
+    }
+
+    public void setId(byte id) {
+        this.id = id;
+    }
+
+    public byte getLineSpace() {
+        return lineSpace;
+    }
+
+    public void setLineSpace(byte lineSpace) {
+        this.lineSpace = lineSpace;
+    }
+
+    public byte getRunMode() {
+        return runMode;
+    }
+
+    public void setRunMode(byte runMode) {
+        this.runMode = runMode;
+    }
+
+    public short getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(short timeout) {
+        this.timeout = timeout;
+    }
+
+    public byte getSoundMode() {
+        return soundMode;
+    }
+
+    public void setSoundMode(byte soundMode) {
+        this.soundMode = soundMode;
+    }
+
+    public byte getExtendParaLen() {
+        return extendParaLen;
+    }
+
+    public void setExtendParaLen(byte extendParaLen) {
+        this.extendParaLen = extendParaLen;
+    }
+
+    public byte getTypeSetting() {
+        return typeSetting;
+    }
+
+    public void setTypeSetting(byte typeSetting) {
+        this.typeSetting = typeSetting;
+    }
+
+    public byte getAlignment() {
+        return alignment;
+    }
+
+    public void setAlignment(byte alignment) {
+        this.alignment = alignment;
+    }
+
+    public byte getSingleLine() {
+        return singleLine;
+    }
+
+    public void setSingleLine(byte singleLine) {
+        this.singleLine = singleLine;
+    }
+
+    public byte getAutoNewLine() {
+        return autoNewLine;
+    }
+
+    public void setAutoNewLine(byte autoNewLine) {
+        this.autoNewLine = autoNewLine;
+    }
+
+    public byte getDispMode() {
+        return dispMode;
+    }
+
+    public void setDispMode(byte dispMode) {
+        this.dispMode = dispMode;
+    }
+
+    public byte getExitMode() {
+        return exitMode;
+    }
+
+    public void setExitMode(byte exitMode) {
+        this.exitMode = exitMode;
+    }
+
+    public byte getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(byte speed) {
+        this.speed = speed;
+    }
+
+    public byte getHoldTime() {
+        return holdTime;
+    }
+
+    public void setHoldTime(byte holdTime) {
+        this.holdTime = holdTime;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
     }
 }
