@@ -84,7 +84,7 @@ public class Main {
         y = 0;
         w = 32;
         h = 16;
-        String s3 = "油价:6.7元";
+        String s3 = "油价";
         byte[] data3;
 
         try {
@@ -100,7 +100,7 @@ public class Main {
             // 0x05——向上移动
             // 0x06——向下移动
             // 设置显示方式为 0x03 - 向左移动
-            area3.setDispMode((byte) 0x03);
+            area3.setDispMode((byte) 0x02);
 
             // 移动速度
             area3.setSpeed((byte) 0x02);
@@ -130,7 +130,7 @@ public class Main {
 
         //
         // 创建 socket 地址
-        SocketAddress address = new InetSocketAddress("192.168.88.168", 5005);
+        SocketAddress address = new InetSocketAddress("192.168.31.100", 5005);
 
 
         try {
@@ -153,11 +153,22 @@ public class Main {
             out.write(seq);
 
             //
-            // @todo
             // 回读返回帧
-            // 现在还没有对返回帧进行解析，后续有时间添加
             byte[] resp = new byte[1024];
-            in.read(resp);
+            int len = in.read(resp);
+
+            //
+            // parse
+            BxResp bxResp = BxResp.parse(resp, len);
+
+            //
+            // 判断命令是否被正确执行
+            if(bxResp.isAck()) {
+                System.out.println("Well done!!");
+            }
+            else {
+                System.out.println("I am sorry!");
+            }
 
             //
             out.close();

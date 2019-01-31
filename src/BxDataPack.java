@@ -1,3 +1,6 @@
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 /**
  *
  */
@@ -53,6 +56,8 @@ public class BxDataPack {
     //
     // crc
     public short crc;
+
+    private BxDataPack() {}
 
     public BxDataPack(byte[] data) {
         this.data = data;
@@ -211,16 +216,85 @@ public class BxDataPack {
      * @param src
      * @return
      */
-    public static BxDataPack parse(byte[] src) {
+    public static BxDataPack parse(byte[] src, int length) {
 
         //
         // 反转义
-        byte[] dst = unwrap(src, src.length);
+        byte[] dst = unwrap(src, length);
         if(dst == null) {
             return null;
         }
+        else {
 
-        return null;
+            //
+            // check crc
+            //if(BxUtils.CRC16())
+            short crcCalculated = BxUtils.CRC16(dst, 0, dst.length-2);
+            short crcGot = BxUtils.bytesToShort(dst, dst.length-2, BxUtils.ENDIAN.LITTLE);
+
+            if(crcCalculated != crcGot)
+                return null;
+
+
+            BxDataPack pack = new BxDataPack();
+
+            int offset = 0;
+
+            //
+            // 目标地址
+            pack.dstAddr = BxUtils.bytesToShort(dst, offset, BxUtils.ENDIAN.LITTLE);
+            offset += 2;
+
+            //
+            // 源地址
+            pack.srcAddr = BxUtils.bytesToShort(dst, offset, BxUtils.ENDIAN.LITTLE);
+            offset += 2;
+
+            //
+            // 保留字 r0, r1, r2
+            pack.r0 = dst[offset++];
+            pack.r1 = dst[offset++];
+            pack.r2 = dst[offset++];
+
+            //
+            // option
+            pack.option = dst[offset++];
+
+            //
+            // 校验模式
+            pack.crcMode = dst[offset++];
+
+            //
+            // 显示模式
+            pack.dispMode = dst[offset++];
+
+            //
+            // 设备类型
+            pack.deviceType = dst[offset++];
+
+            //
+            // 协议版本
+            pack.version = dst[offset++];
+
+            //
+            // 数据域长度
+            pack.dataLen = BxUtils.bytesToShort(dst, offset, BxUtils.ENDIAN.LITTLE);
+            offset += 2;
+
+            //
+            // 数据
+            //pack.data = new byte[pack.dataLen];
+            pack.data = Arrays.copyOfRange(dst, offset, offset+pack.dataLen);
+            offset += pack.dataLen;
+
+            //
+            // crc
+            pack.crc = BxUtils.bytesToShort(dst, offset, BxUtils.ENDIAN.LITTLE);
+
+            //
+            return pack;
+        }
+
     }
 
 
