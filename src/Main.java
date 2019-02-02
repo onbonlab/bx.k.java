@@ -171,6 +171,37 @@ public class Main {
             }
 
             //
+            // 关机
+            BxCmd cmdTurnOff = new BxCmdTurnOnOff(false);
+            BxDataPack packTurnOff = new BxDataPack(cmdTurnOff);
+            byte[] seqTurnOff = packTurnOff.pack();
+            out.write(seqTurnOff);
+            len = in.read(resp);
+            bxResp = BxResp.parse(resp, len);
+            if(bxResp.isAck()) {
+                System.out.println("turn off, ok");
+            }
+            else {
+                System.out.println("turn off, failed");
+            }
+
+            //
+            // 开机
+            BxCmd cmdTurnOn = new BxCmdTurnOnOff(true);
+            BxDataPack packTurnOn = new BxDataPack(cmdTurnOn);
+            byte[] seqTurnOn = packTurnOn.pack();
+            out.write(seqTurnOn);
+            len = in.read(resp);
+            bxResp = BxResp.parse(resp, len);
+            if(bxResp.isAck()) {
+                System.out.println("turn on, ok");
+            }
+            else {
+                System.out.println("turn on, failed");
+            }
+
+
+            //
             out.close();
             in.close();
             client.close();
