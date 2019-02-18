@@ -50,7 +50,7 @@ public class Main {
         y = 16;
         w = 64;
         h = 16;
-        String s2 = "中国石化欢迎你！";
+        String s2 = "新年快乐！";
         byte[] data2;
 
         try {
@@ -84,7 +84,7 @@ public class Main {
         y = 0;
         w = 32;
         h = 16;
-        String s3 = "油价";
+        String s3 = "小猪";
         byte[] data3;
 
         try {
@@ -123,6 +123,10 @@ public class Main {
 
         // 生成命令序列
         byte[] seq = dataPack.pack();
+
+
+
+
 
         //
         // 创建 Socket
@@ -199,6 +203,17 @@ public class Main {
             else {
                 System.out.println("turn on, failed");
             }
+
+            //
+            // 生成节目
+            String str = "1234";
+            BxArea area1 = new BxAreaDynamic((byte)0, (short)0, (short)0, (short)64, (short)32, str.getBytes("gb2312"));
+            List<BxArea> pareas = new ArrayList<BxArea>();
+            pareas.add(area1);
+
+            // 节目文件
+            BxFileProgram program = new BxFileProgram(0, pareas);
+            byte[] pfile = program.build();
 
 
             //
