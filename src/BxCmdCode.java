@@ -7,6 +7,7 @@ public enum  BxCmdCode {
     CMD_NACK("nack", (byte)0xa0, (byte)0x01),
 
     CMD_TURN_ON_OFF("turn on/off screen", (byte)0xa3, (byte)00),
+    CMD_CLEAR_SCREEN("clear the screen", (byte)0xa3, (byte)0x10),
 
     CMD_START_WRITE_FILE("start write file", (byte)0xa1,(byte) 0x05),
     CMD_WRITE_FILE("write file", (byte)0xa1, (byte)0x06),

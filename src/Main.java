@@ -134,7 +134,7 @@ public class Main {
 
         //
         // 创建 socket 地址
-        SocketAddress address = new InetSocketAddress("192.168.31.100", 5005);
+        SocketAddress address = new InetSocketAddress("192.168.88.12", 5005);
 
 
         try {
@@ -204,6 +204,7 @@ public class Main {
                 System.out.println("turn on, failed");
             }
 
+            /*
             //
             // 生成节目
             String str = "1234";
@@ -214,6 +215,23 @@ public class Main {
             // 节目文件
             BxFileProgram program = new BxFileProgram(0, pareas);
             byte[] pfile = program.build();
+            */
+
+            //
+            // 清屏
+            BxCmd cmdClearScreen = new BxCmdClearScreen();
+            BxDataPack packClearScreen = new BxDataPack(cmdClearScreen);
+            byte[] seqClearScreen = packClearScreen.pack();
+
+            out.write(seqClearScreen);
+            len = in.read(resp);
+            bxResp = BxResp.parse(resp, len);
+            if(bxResp.isAck()) {
+                System.out.println("clear screen, ok");
+            }
+            else {
+                System.out.println("clear screen, failed");
+            }
 
 
             //
