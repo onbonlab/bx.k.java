@@ -47,8 +47,7 @@ public class BxAreaDynamic extends BxArea {
     private byte soundRepeat = 0x00;
     private byte soundVolume = 0x05;
     private byte soundSpeed = 0x05;
-    private int soundDataLen = 0x00;
-    private byte[] soundData;
+    public byte[] soundData;
 
     //
     // extend para len
@@ -148,7 +147,7 @@ public class BxAreaDynamic extends BxArea {
         // 0x00 - 表示不使能语音
         // 0x01 - 表示播放下文中 Data 部分内容
         // 0x02 - 表示播放下文中 SoundData 部分内容
-        if(soundMode == 0x01) {
+        if((soundMode == 0x01) || (soundMode == 0x02)) {
             //
             // person/repeat times
             byte pr = (byte) (((soundRepeat << 4) & 0xf0) | (soundPerson & 0x0f));
@@ -160,6 +159,17 @@ public class BxAreaDynamic extends BxArea {
 
             // sound speed
             array.add(soundSpeed);
+        }
+
+        //
+        // sound data
+        if(soundMode == 0x02) {
+            // sound data length
+            int soundDataLen = soundData.length;
+            array.add(soundDataLen);
+
+            // sound data
+            array.add(soundData);
         }
 
         //
@@ -236,7 +246,10 @@ public class BxAreaDynamic extends BxArea {
     }
 
     public void setSoundMode(byte soundMode) {
-        this.soundMode = soundMode;
+        if(soundMode > 2)
+            this.soundMode = 0x02;
+        else
+            this.soundMode = soundMode;
     }
 
     public byte getExtendParaLen() {
@@ -319,6 +332,8 @@ public class BxAreaDynamic extends BxArea {
         this.data = data;
     }
 
+
+
     public byte getSoundPerson() {
         return soundPerson;
     }
@@ -363,5 +378,13 @@ public class BxAreaDynamic extends BxArea {
             this.soundSpeed = 10;
         else
             this.soundSpeed = soundSpeed;
+    }
+
+    public byte[] getSoundData() {
+        return soundData;
+    }
+
+    public void setSoundData(byte[] soundData) {
+        this.soundData = soundData;
     }
 }
