@@ -43,6 +43,14 @@ public class BxAreaDynamic extends BxArea {
     private byte soundMode = 0x00;
 
     //
+    private byte soundPerson = 0x00;
+    private byte soundRepeat = 0x00;
+    private byte soundVolume = 0x05;
+    private byte soundSpeed = 0x05;
+    private int soundDataLen = 0x00;
+    private byte[] soundData;
+
+    //
     // extend para len
     private byte extendParaLen = 0x00;
 
@@ -134,6 +142,25 @@ public class BxAreaDynamic extends BxArea {
         //
         // sound mode
         array.add(soundMode);
+
+        //
+        // sound mode = 0x01
+        // 0x00 - 表示不使能语音
+        // 0x01 - 表示播放下文中 Data 部分内容
+        // 0x02 - 表示播放下文中 SoundData 部分内容
+        if(soundMode == 0x01) {
+            //
+            // person/repeat times
+            byte pr = (byte) (((soundRepeat << 4) & 0xf0) | (soundPerson & 0x0f));
+            array.add(pr);
+
+            //
+            // sound volume
+            array.add(soundVolume);
+
+            // sound speed
+            array.add(soundSpeed);
+        }
 
         //
         // extendParaLen
@@ -290,5 +317,51 @@ public class BxAreaDynamic extends BxArea {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public byte getSoundPerson() {
+        return soundPerson;
+    }
+
+    public void setSoundPerson(byte soundPerson) {
+        if(soundPerson > 5)
+            this.soundPerson = 0;
+        else
+            this.soundPerson = soundPerson;
+    }
+
+    public byte getSoundRepeat() {
+        return soundRepeat;
+    }
+
+    public void setSoundRepeat(byte soundRepeat) {
+        if(soundRepeat > 15)
+            this.soundRepeat = 15;
+        else
+            this.soundRepeat = soundRepeat;
+    }
+
+    public byte getSoundVolume() {
+        return soundVolume;
+    }
+
+    public void setSoundVolume(byte soundVolume) {
+        if(soundVolume > 10)
+            this.soundVolume = 10;
+        else
+            this.soundVolume = soundVolume;
+    }
+
+    public byte getSoundSpeed() {
+        return soundSpeed;
+    }
+
+    public void setSoundSpeed(byte soundSpeed) {
+        if(soundSpeed < 1)
+            this.soundSpeed = 1;
+        else if(soundSpeed > 10)
+            this.soundSpeed = 10;
+        else
+            this.soundSpeed = soundSpeed;
     }
 }

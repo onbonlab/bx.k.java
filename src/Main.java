@@ -58,6 +58,18 @@ public class Main {
             BxAreaDynamic area2 = new BxAreaDynamic(id, x, y, w, h, data2);
 
             //
+            // 是否使能语音
+            area2.setSoundMode((byte) 0x01);
+            // 人声模式
+            area2.setSoundPerson((byte) 0x00);
+            // 重复次数
+            area2.setSoundRepeat((byte) 0x03);
+            // 发音速度
+            area2.setSoundSpeed((byte) 0x02);
+            // 音量
+            area2.setSoundVolume((byte) 10);
+
+            //
             // 显示方式，其定义如下：
             // 0x01——静止显示
             // 0x02——快速打出
@@ -125,16 +137,13 @@ public class Main {
         byte[] seq = dataPack.pack();
 
 
-
-
-
         //
         // 创建 Socket
         Socket client = new Socket();
 
         //
         // 创建 socket 地址
-        SocketAddress address = new InetSocketAddress("192.168.88.12", 5005);
+        SocketAddress address = new InetSocketAddress("192.168.88.8", 5005);
 
 
         try {
