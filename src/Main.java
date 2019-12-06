@@ -62,7 +62,7 @@ public class Main {
             byte[] soundData = hello.getBytes("gb2312");
 
             //
-            // 是否使能语音
+            // 语音模式
             area2.setSoundMode((byte) 0x02);
             // 人声模式
             area2.setSoundPerson((byte) 0x00);
@@ -72,7 +72,7 @@ public class Main {
             area2.setSoundSpeed((byte) 0x02);
             // 音量
             area2.setSoundVolume((byte) 10);
-            //
+            // 要发声的文字，仅在 soundMode = 0x02时有效
             area2.setSoundData(soundData);
 
             //
