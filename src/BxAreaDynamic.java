@@ -117,9 +117,9 @@ public class BxAreaDynamic extends BxArea {
         array.add(TYPE);
 
         // x, y, w, h
-        array.add((short)(getX()/8));
+        array.add((short)(getX() | 0x80));
         array.add(getY());
-        array.add((short)(getW()/8));
+        array.add((short)(getW() | 0x80));
         array.add(getH());
 
         //
