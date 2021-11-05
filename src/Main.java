@@ -8,6 +8,7 @@ import java.net.SocketAddress;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class Main {
 
@@ -217,6 +218,20 @@ public class Main {
             }
             else {
                 System.out.println("turn on, failed");
+            }
+			
+			//校时
+            BxCmd systime = new BxCmdSystemClockCorrect(new Date());
+            BxDataPack timePack = new BxDataPack(systime);
+            byte[] seqtime = timePack.pack();
+            out.write(seqtime);
+            len = in.read(resp);
+            bxResp = BxResp.parse(resp, len);
+            if(bxResp.isAck()) {
+                System.out.println("system clock correct, ok");
+            }
+            else {
+                System.out.println("system clock correct, failed");
             }
 
             /*
