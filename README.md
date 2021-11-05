@@ -67,7 +67,26 @@ BxDataPack dataPack = new BxDataPack(cmd);
 byte[] seq = dataPack.pack();
 
 ```
+```
+// 校时
+BxCmd systime = new BxCmdSystemClockCorrect(new Date());
+BxDataPack timePack = new BxDataPack(systime);
+byte[] seqtime = timePack.pack();
+out.write(seqtime);
+len = in.read(resp);
+bxResp = BxResp.parse(resp, len);
+if(bxResp.isAck()) {
+	System.out.println("system clock correct, ok");
+}
+else {
+	System.out.println("system clock correct, failed");
+}
+```
+
+
+
 ### 动态区的使用
+
 #### 什么是动态区？
 动态区与普通节目相比，其数据存储在 RAM 中。因此，其掉电不保存，但是对于刷新次数没有限制。
 其主要应用于更新频次高，更新速度比较快的场合。
