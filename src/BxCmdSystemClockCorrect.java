@@ -1,5 +1,6 @@
 package bx.k;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -18,7 +19,7 @@ public class BxCmdSystemClockCorrect extends BxCmd {
 
     protected int second;
 
-    protected byte week;
+    protected int week;
 	
 	public BxCmdSystemClockCorrect(Date time) {
         super(BxCmdCode.CMD_SYSTEM_CLOCK_CORRECT.group, BxCmdCode.CMD_SYSTEM_CLOCK_CORRECT.code);
@@ -55,8 +56,46 @@ public class BxCmdSystemClockCorrect extends BxCmd {
                 this.week = 7;
                 break;
         }
-    }
+        
+        //时间转成BCD码
+        String resultY = DecimaltoBcd(String.valueOf(this.year));
+        String resultM = DecimaltoBcd(String.valueOf(this.month));
+        String resultD = DecimaltoBcd(String.valueOf(this.day));
+        String resultH = DecimaltoBcd(String.valueOf(this.hour));
+        String resultm = DecimaltoBcd(String.valueOf(this.minute));
+        String resultS = DecimaltoBcd(String.valueOf(this.second));
+        String resultW = DecimaltoBcd(String.valueOf(this.week));
+    	this.year = Integer.parseInt(resultY, 2);
+    	this.month = Integer.parseInt(resultM, 2);
+    	this.day = Integer.parseInt(resultD, 2);
+    	this.hour = Integer.parseInt(resultH, 2);
+    	this.minute = Integer.parseInt(resultm, 2);
+    	this.second = Integer.parseInt(resultS, 2);
+    	this.week = Integer.parseInt(resultW, 2);
+	}
+	
+	/**
+     * 10进制转bcd
+     * @param str 10进制数字 String.valueOf(int number);将10进制数字转成字符串传入此参数
+     * @return bcd码
+     */
+     public String DecimaltoBcd(String str){     
+        String b_num="";
+        for (int i = 0; i < str.length(); i++) {
 
+            String b = Integer.toBinaryString(Integer.parseInt(str.valueOf(str.charAt(i))));
+
+            int b_len=4-b.length();
+
+            for(int j=0;j<b_len;j++){
+                b="0"+b;                
+            }
+            b_num+=b;
+        }
+
+        return b_num;
+    }
+     
     @Override
     public byte[] build() {
         //
@@ -77,7 +116,8 @@ public class BxCmdSystemClockCorrect extends BxCmd {
         array.add((byte)0x00);
         array.add((byte)0x00);
 
-        //BCD码：年（2）+月（1）+日（1）+时（1）+分（1）+秒（1）+星期（1）
+        //BCD码：年（2）+月（1）+日（1）+时（1）+分（1）+秒（1）+星期（1）；先地位再高位
+        //年：低端发送，低位在前
     	byte[] contType = new byte[] {
                 (byte) this.year,
                 (byte) (this.year >>> 8),
