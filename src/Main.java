@@ -34,7 +34,8 @@ public class Main {
         byte [] data1 = new byte[0];
         try {
             data1 = s1.getBytes("gb2312");
-            BxAreaDynamic area1 = new BxAreaDynamic(id, x, y, w, h, data1);
+			//五代K卡最后一个参数给true、非5代的给false
+            BxAreaDynamic area1 = new BxAreaDynamic(id, x, y, w, h, data1, true);
             // 添加到列表
             areas.add(area1);
 
@@ -56,7 +57,8 @@ public class Main {
 
         try {
             data2 = s2.getBytes("gb2312");
-            BxAreaDynamic area2 = new BxAreaDynamic(id, x, y, w, h, data2);
+			//五代K卡最后一个参数给true、非5代的给false
+            BxAreaDynamic area2 = new BxAreaDynamic(id, x, y, w, h, data2, true);
 
 
             String hello = "元宵节快乐";
@@ -108,7 +110,8 @@ public class Main {
 
         try {
             data3 = s3.getBytes("gb2312");
-            BxAreaDynamic area3 = new BxAreaDynamic(id, x, y, w, h, data3);
+			//五代K卡最后一个参数给true、非5代的给false
+            BxAreaDynamic area3 = new BxAreaDynamic(id, x, y, w, h, data3, true);
 
             //
             // 显示方式，其定义如下：

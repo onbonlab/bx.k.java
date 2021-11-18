@@ -1,8 +1,10 @@
+package bx.k;
 public class BxAreaDynamic extends BxArea {
 
     private static final byte TYPE = 0x00;
 
-
+    private boolean is5K = false;
+    
     //
     // id
     // 动态区域编号
@@ -100,11 +102,21 @@ public class BxAreaDynamic extends BxArea {
     // data
     private byte[] data;
 
-
-    public BxAreaDynamic(byte id, short x, short y, short w, short h, byte[] data) {
+    /**
+     * 动态区
+     * @param id	动态区ID
+     * @param x		动态区x坐标
+     * @param y		动态区y坐标
+     * @param w		动态区宽度
+     * @param h		动态区高度
+     * @param data	需要显示的数据
+     * @param is5K	是否是5K系列的字库卡
+     */
+    public BxAreaDynamic(byte id, short x, short y, short w, short h, byte[] data, boolean is5K) {
         super(TYPE, x, y, w, h);
         this.id = id;
         this.data = data;
+        this.is5K = is5K;
     }
 
 
@@ -117,9 +129,11 @@ public class BxAreaDynamic extends BxArea {
         array.add(TYPE);
 
         // x, y, w, h
-        array.add((short)(getX() | 0x8000));
+        short x8 = is5K ? (short)(getX() / 8) : getX(); 
+        short w8 = is5K ? (short)(getW() / 8) : getW();
+        array.add(x8);
         array.add(getY());
-        array.add((short)(getW() | 0x8000));
+        array.add(w8);
         array.add(getH());
 
         //
