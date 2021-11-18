@@ -10,7 +10,6 @@
 此项目目前已支持的功能：
 * 动态区（包含语音）
 * 开机与关机
-* 清除屏幕
 * 校时
 
 ## 待实现功能
@@ -110,7 +109,8 @@ String s1 = "\\C20123";
 byte [] data1 = new byte[0];
 try {
     data1 = s1.getBytes("gb2312");
-    BxAreaDynamic area1 = new BxAreaDynamic(id, x, y, w, h, data1);
+    //五代K卡最后一个参数给true、非5代的给false
+    BxAreaDynamic area1 = new BxAreaDynamic(id, x, y, w, h, data1, true);
     // 添加到列表
     areas.add(area1);
 
