@@ -1,4 +1,4 @@
-package bx.k;
+
 /**
  *
  */
@@ -9,7 +9,8 @@ public enum  BxCmdCode {
 
     CMD_TURN_ON_OFF("turn on/off screen", (byte)0xa3, (byte)00),
     CMD_CLEAR_SCREEN("clear the screen", (byte)0xa3, (byte)0x10),
-    
+    CMD_TIMER("timer", (byte)0xa3, (byte)0x01),
+    CMD_CLEAN_TIMER("timer", (byte)0xa3, (byte)0x08),
     CMD_SYSTEM_CLOCK_CORRECT("system clock correct", (byte)0xa2, (byte)03),
 
     CMD_START_WRITE_FILE("start write file", (byte)0xa1,(byte) 0x05),
